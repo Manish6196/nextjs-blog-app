@@ -11,7 +11,10 @@ import { useState } from 'react'
 const Dashboard = () => {
   const session = useSession()
   const router = useRouter()
-  const [imageSrc, setImageSrc] = useState()
+  const [title, setTitle] = useState()
+  const [desc, setDesc] = useState()
+  const [img, setImg] = useState()
+  const [content, setContent] = useState()
 
   const fetcher = (...args) => fetch(...args).then(res => res.json())
 
@@ -28,13 +31,7 @@ const Dashboard = () => {
     router?.push('/dashboard/login')
   }
 
-  const handleSubmit = async e => {
-    e.preventDefault()
-    const title = e.target[0].value
-    const desc = e.target[1].value
-    const img = imageSrc
-    const content = e.target[3].value
-
+  const handleSubmit = async () => {
     try {
       await fetch('/api/posts', {
         method: 'POST',
@@ -85,22 +82,36 @@ const Dashboard = () => {
                 </div>
               ))}
         </div>
-        <form className={styles.new} onSubmit={handleSubmit}>
+        <div className={styles.new}>
           <h1>Add New Post</h1>
-          <input type='text' placeholder='Title' className={styles.input} />
-          <input type='text' placeholder='Desc' className={styles.input} />
-          <ImageUpload
-            onChange={value => setImageSrc(value)}
-            value={imageSrc}
+          <input
+            type='text'
+            placeholder='Title'
+            className={styles.input}
+            value={title}
+            onChange={e => setTitle(e.target.value)}
           />
+          <input
+            type='text'
+            placeholder='Desc'
+            className={styles.input}
+            value={desc}
+            onChange={e => setDesc(e.target.value)}
+          />
+          <ImageUpload onChange={value => setImg(value)} value={img} />
           <textarea
             placeholder='Content'
             className={styles.textArea}
             cols='30'
             rows='10'
-          ></textarea>
-          <button className={styles.button}>Send</button>
-        </form>
+            onChange={e => setContent(e.target.value)}
+          >
+            {content}
+          </textarea>
+          <button className={styles.button} onClick={handleSubmit}>
+            Send
+          </button>
+        </div>
       </div>
     )
   }
