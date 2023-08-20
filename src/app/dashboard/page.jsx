@@ -105,12 +105,11 @@ const Dashboard = () => {
           <textarea
             placeholder='Content'
             className={styles.textArea}
+            value={content}
+            onChange={e => setContent(e.target.value)}
             cols='30'
             rows='10'
-            onChange={e => setContent(e.target.value)}
-          >
-            {content}
-          </textarea>
+          />
           <button
             className={styles.button}
             onClick={handleSubmit}
