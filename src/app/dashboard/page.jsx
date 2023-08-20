@@ -11,10 +11,10 @@ import { useState } from 'react'
 const Dashboard = () => {
   const session = useSession()
   const router = useRouter()
-  const [title, setTitle] = useState()
-  const [desc, setDesc] = useState()
-  const [img, setImg] = useState()
-  const [content, setContent] = useState()
+  const [title, setTitle] = useState('')
+  const [desc, setDesc] = useState('')
+  const [img, setImg] = useState('')
+  const [content, setContent] = useState('')
 
   const fetcher = (...args) => fetch(...args).then(res => res.json())
 
@@ -44,7 +44,10 @@ const Dashboard = () => {
         }),
       })
       mutate()
-      e.target.reset()
+      setTitle('')
+      setDesc('')
+      setImg('')
+      setContent('')
     } catch (err) {
       console.log(err)
     }
@@ -108,7 +111,11 @@ const Dashboard = () => {
           >
             {content}
           </textarea>
-          <button className={styles.button} onClick={handleSubmit}>
+          <button
+            className={styles.button}
+            onClick={handleSubmit}
+            disabled={!title || !desc || !img || !content}
+          >
             Send
           </button>
         </div>
