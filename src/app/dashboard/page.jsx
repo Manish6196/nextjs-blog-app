@@ -5,10 +5,13 @@ import useSWR from 'swr'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import ImageUpload from '@/components/form/ImageUpload'
+import { useState } from 'react'
 
 const Dashboard = () => {
   const session = useSession()
   const router = useRouter()
+  const [imageSrc, setImageSrc] = useState()
 
   const fetcher = (...args) => fetch(...args).then(res => res.json())
 
@@ -29,7 +32,7 @@ const Dashboard = () => {
     e.preventDefault()
     const title = e.target[0].value
     const desc = e.target[1].value
-    const img = e.target[2].value
+    const img = imageSrc
     const content = e.target[3].value
 
     try {
@@ -86,7 +89,10 @@ const Dashboard = () => {
           <h1>Add New Post</h1>
           <input type='text' placeholder='Title' className={styles.input} />
           <input type='text' placeholder='Desc' className={styles.input} />
-          <input type='text' placeholder='Image' className={styles.input} />
+          <ImageUpload
+            onChange={value => setImageSrc(value)}
+            value={imageSrc}
+          />
           <textarea
             placeholder='Content'
             className={styles.textArea}
